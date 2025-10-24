@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lonchera Mágica - Inicio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fuente DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.6s ease;
+      pointer-events: auto;
+    }
+    #preloader img {
+      width: 100px;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    #preloader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .titulo-magico {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      background: linear-gradient(90deg, #fffbe9, #ffd700, #fffbe9, #ffd700, #fffbe9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: magia 5s infinite linear, brillo 3s infinite alternate;
+    }
+
+    @keyframes magia {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes brillo {
+      0% { text-shadow: 0 0 5px #fff, 0 0 10px #ffd700, 0 0 20px #fff5b0; }
+      50% { text-shadow: 0 0 15px #fff, 0 0 25px #ffe066, 0 0 35px #ffd700; }
+      100% { text-shadow: 0 0 20px #fff, 0 0 30px #fff2cc, 0 0 40px #ffd700; }
+    }
+
+
+    /* Sidebar */
+    .sidebar-title {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fefce8;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    .sidebar-title:hover {
+      background: rgba(234, 88, 12, 0.9);
+      color: #fff;
+      transform: translateX(6px);
+    }
+
+    /* Hero con overlay */
+    #hero {
+      position: relative;
+      transition: background-image 0.8s ease-in-out;
+    }
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1;
+    }
+
+    /* Sidebar para desktop */
+    .sidebar {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Sidebar adaptado para móvil - no se muestra (usamos mobile pills en móvil) */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+    }
+
+    /* Contenido encima del overlay */
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      padding: 1rem;
+      margin: 0 1rem;
+    }
+
+    /* Hero content transición */
+    .hero-content {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      display: none;
+    }
+    .hero-content.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #mobileMenu {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      position: fixed; /* fijo al hacer scroll */
+      top: 4rem; /* justo debajo del navbar */
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 140, 0, 0.95);
+      text-align: center;
+      padding: 1.5rem 0;
+      border-radius: 0 0 1rem 1rem;
+      z-index: 50;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #mobileMenu a {
+      font-size: 1.25rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    #mobileMenu a:hover {
+      background-color: rgba(255, 165, 0, 0.8); /* hover naranja más intenso */
+    }
+
+    /* --- ADICIONES MINIMAS QUE PEDISTE --- */
+
+        /* Mobile nav pills (solo en móvil/tablet): */
+    .mobile-nav {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.5rem;
+        position: absolute;
+        bottom: 1rem;
+        left: 0;
+        right: 0;
+        justify-content: center;
+        z-index: 3;
+        padding: 0.5rem 0.75rem;
+        flex-wrap: nowrap;
+      }
+
+      .mobile-nav button {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 0.45rem 0.9rem;
+        border-radius: 9999px;
+        white-space: nowrap;
+        transition: all 0.3s;
+        border: none;
+        flex-shrink: 0; /* evita que se achiquen raro */
+      }
+
+      .mobile-nav button:active,
+      .mobile-nav button:hover {
+        background: rgba(234, 88, 12, 0.9);
+      }
+    }
+
+    /* Ajuste especial para celulares muy pequeños (<480px) */
+    @media (max-width: 480px) {
+      .mobile-nav {
+        flex-wrap: wrap; /* en lugar de scroll horizontal, se acomodan */
+        justify-content: center;
+        gap: 0.4rem;
+      }
+
+      .mobile-nav button {
+        flex: 1 1 calc(50% - 0.5rem); /* 2 columnas */
+        text-align: center;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.5rem;
+        white-space: normal; /* permite que el texto se parta si es largo */
+      }
+    }
+
+    /* Inspirational quote: visible only on desktop, positioned bottom-right without affecting layout */
+    .inspirational-quote {
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .inspirational-quote {
+        display: block;
+        position: absolute;
+        bottom: 20px;
+        right: 30px;
+        max-width: 320px;
+        font-style: italic;
+        color: #fef9c3;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 0.75rem 1rem;
+        border-left: 4px solid #f97316;
+        border-radius: 0.5rem;
+        z-index: 3;
+        line-height: 1.2;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-orange-100 to-yellow-50 text-gray-800 overflow-hidden">
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <img src="assets/logo.png" alt="Cargando...">
+  </div>
+
+  <!-- NAVBAR -->
+  <header id="siteHeader" class="absolute top-0 left-0 w-full z-50">
+    <nav class="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto text-orange-700">
+      <div class="flex items-center space-x-3">
+        <img src="assets/logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12">
+        <span class="titulo-magico">Lonchera Mágica</span>
+      </div>
+      <ul class="hidden md:flex space-x-6 md:space-x-8 text-lg font-medium text-white drop-shadow-md">
+        <li><a href="index.html" class="text-orange-400">Inicio</a></li>
+        <li><a href="menus.html">Menús</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="seleccion.html">Selección</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="md:hidden text-3xl cursor-pointer text-white" id="menuToggle">☰</div>
+    </nav>
+    <!-- Menú móvil desplegable (lo dejé exactamente como en tu código original) -->
+    <div id="mobileMenu" class="hidden md:hidden flex-col items-center bg-orange-500/95 text-white py-6 fixed top-16 left-0 w-full z-50 rounded-b-xl">
+      <a href="index.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Inicio</a>
+      <a href="menus.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Menús</a>
+      <a href="blog.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Blog</a>
+      <a href="seleccion.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Selección</a>
+      <a href="contacto.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Contacto</a>
+    </div>
+  </header>
+
+  <!-- HERO PRINCIPAL -->
+  <section id="hero" class="relative w-full h-screen flex items-center justify-center bg-cover bg-center" 
+           style="background-image: url('img/loncheramagica.png');">
+
+    <!-- Sidebar (DESKTOP) - lo dejé tal cual -->
+    <div class="sidebar">
+      <div class="sidebar-title" data-target="inicio" data-bg="img/loncheramagica.png">🏠 Inicio</div>
+      <div class="sidebar-title" data-target="introduccion" data-bg="img/imglonchera2.png">➡️ Intro</div>
+      <div class="sidebar-title" data-target="pregunta" data-bg="img/imglonchera3.png">❔ ¿Qué es?</div>
+      <div class="sidebar-title" data-target="testimonios" data-bg="img/imglonchera5.jpg">💬 Opiniones</div>
+      <div class="sidebar-title" data-target="cta" data-bg="img/cta.jpg">🚀 Empezar</div>
+    </div>
+
+    <!-- Navegación móvil tipo pills (ADICIÓN, solo móvil) -->
+    <div class="mobile-nav" aria-hidden="true">
+      <button data-target="inicio" data-bg="img/loncheramagica.png">🏠 Inicio</button>
+      <button data-target="introduccion" data-bg="img/imglonchera2.png">➡️ Intro</button>
+      <button data-target="pregunta" data-bg="img/imglonchera3.png">❔ ¿Qué es?</button>
+      <button data-target="testimonios" data-bg="img/imglonchera5.jpg">💬 Opiniones</button>
+      <button data-target="cta" data-bg="img/cta.jpg">🚀 Empezar</button>
+    </div>
+
+    <!-- Contenido dinámico (mantuve todo exactamente igual) -->
+    <div class="hero-inner text-center bg-black/40 p-6 md:p-8 rounded-xl shadow-lg max-w-3xl text-white">
+      
+      <!-- Inicio -->
+      <div id="inicio" class="hero-content active">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-orange-400">
+          Alimentación saludable para los más pequeños
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl mb-6 md:mb-8">
+          Loncheras nutritivas, divertidas y listas para acompañar su día.
+        </p>
+        <a href="menus.html" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-full shadow-lg transition transform hover:scale-105">
+          Ver Menús
+        </a>
+      </div>
+
+      <!-- Introducción -->
+      <div id="introduccion" class="hero-content">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-orange-400">La importancia de una lonchera saludable</h2>
+        <p class="text-sm sm:text-base md:text-lg mb-4">
+          Una lonchera saludable es clave para mantener energía, concentración y un adecuado desarrollo físico y mental a lo largo del día. 
+          Cuando los niños llevan una alimentación equilibrada, mejoran su rendimiento escolar, su estado de ánimo y su bienestar general. 
+        </p>
+        <p class="text-sm sm:text-base md:text-lg">
+          En <strong>Lonchera Mágica</strong> te damos consejos prácticos, ideas creativas y menús completos para que preparar la lonchera deje de ser un reto y se convierta en un momento divertido y nutritivo.
+        </p>
+      </div>
+
+      <!-- Qué es -->
+      <div id="pregunta" class="hero-content">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-orange-400">¿Qué es una lonchera saludable?</h2>
+        <p class="text-sm sm:text-base md:text-lg mb-4">
+          Una lonchera saludable es mucho más que solo comida: es una herramienta diaria que ayuda a los niños a mantener su energía estable, mejorar la concentración y evitar la fatiga. 
+          Se compone de alimentos frescos, variados y balanceados que aportan proteínas, carbohidratos, grasas saludables, vitaminas y minerales.
+        </p>
+        <p class="text-sm sm:text-base md:text-lg">
+          En pocas palabras, una buena lonchera es un aliado para el crecimiento y desarrollo de los más pequeños, fomentando hábitos que los acompañarán toda la vida.
+        </p>
+        <br>
+        <p class="text-sm sm:text-base md:text-lg">
+          ¿Quieres saber más? Explora nuestro blog para descubrir consejos, recetas y mucho más.
+        </p>
+        <br>
+        <a href="blog.html" class="bg-orange-600 text-white px-6 py-2 sm:px-8 sm:py-3 rounded-full shadow-md hover:scale-105 transition">
+          ir al Blog
+        </a>
+
+      </div>
+
+
+      <!-- Testimonios -->
+      <div id="testimonios" class="hero-content">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-orange-400">Lo que dicen los padres</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          <div class="bg-white/20 p-4 rounded-xl shadow">
+            <p class="italic text-sm sm:text-base">“Mi hijo ahora disfruta sus almuerzos. ¡Ya no pelea con las verduras!”</p>
+            <h4 class="mt-3 font-semibold text-orange-200">— Ana</h4>
+          </div>
+          <div class="bg-white/20 p-4 rounded-xl shadow">
+            <p class="italic text-sm sm:text-base">“Me ahorro tiempo en las mañanas y sé que mi hija come saludable.”</p>
+            <h4 class="mt-3 font-semibold text-orange-200">— Carlos</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div id="cta" class="hero-content">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">¡Empieza hoy mismo!</h2>
+        <p class="mb-4 md:mb-6 text-sm sm:text-base md:text-lg">Puedes elegir que quieres que tu hijo consuma esta semana</p>
+        <a href="seleccion.html" class="bg-orange-600 text-white px-6 py-2 sm:px-8 sm:py-3 rounded-full shadow-md hover:scale-105 transition">
+          Seleccionar Menú
+        </a>
+      </div>
+    </div>
+
+    <!-- Frase inspiradora en desktop (ADICIÓN) -->
+    <div class="inspirational-quote" aria-hidden="true">
+      "Come para vivir, no vivas para comer. La alimentación saludable es el camino hacia una vida plena y feliz."
+    </div>
+  </section>
+
+  <!-- JS -->
+  <script>
+    // Preloader
+    window.addEventListener('load', () => {
+      const preloader = document.getElementById('preloader');
+      if (!preloader) return;
+      preloader.classList.add('fade-out');
+      preloader.addEventListener('transitionend', () => preloader.remove(), { once: true });
+    });
+
+    // --- Mantengo TU comportamiento original para desktop (hover en sidebar) ---
+    const titles = document.querySelectorAll('.sidebar-title');
+    const contents = document.querySelectorAll('.hero-content');
+    const hero = document.getElementById('hero');
+
+    // función reutilizable para cambiar sección y fondo
+    function handleNavChange(el) {
+      const targetId = el.getAttribute('data-target');
+      const bgImage = el.getAttribute('data-bg');
+
+      contents.forEach(c => c.classList.remove('active'));
+      const target = document.getElementById(targetId);
+      if (target) target.classList.add('active');
+
+      if (bgImage) hero.style.backgroundImage = `url('${bgImage}')`;
+    }
+
+    // Mantengo event: hover (tu comportamiento original)
+    titles.forEach(title => {
+      title.addEventListener('mouseenter', () => {
+        handleNavChange(title);
+      });
+      // También añado click por si alguien hace click en desktop (no rompe nada)
+      title.addEventListener('click', () => {
+        handleNavChange(title);
+      });
+    });
+
+    // AÑADIDO: que las "pills" móviles activen la misma función
+    document.querySelectorAll('.mobile-nav button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        handleNavChange(btn);
+      });
+    });
+
+    // Menú móvil (lo dejé igual que venía)
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+    if (!mobileMenu.classList.contains('hidden') && 
+        !mobileMenu.contains(e.target) && 
+        e.target !== menuToggle) {
+      mobileMenu.classList.add('hidden');
+      }
+    });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lonchera Mágica - Contacto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Fondo degradado animado */
+    body {
+      font-family: 'DM Sans', sans-serif;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .fade-in-right {
+      opacity: 0;
+      transform: translateX(30px);
+      animation: fadeRight 1s forwards;
+    }
+    @keyframes fadeRight {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Brillo en hover botón */
+    .btn-glow:hover {
+      box-shadow: 0 0 15px rgba(255, 107, 0, 0.8);
+    }
+
+            /* Fondo borroso con overlay */
+    #bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://media.istockphoto.com/id/1680364261/es/vector/internet-discurso-redes-sociales-hablar-chatear-interacci%C3%B3n.jpg?s=612x612&w=0&k=20&c=Q1iZh6GBiPncbeaNLLBadjUj66si7A0yACk58jFOyts=');
+      background-size: cover;
+      background-position: center;
+      filter: blur(4px);
+      z-index: -2;
+      animation: gradientBG 12s ease infinite;
+
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.65);
+      z-index: -1;
+    }
+
+    #mobileMenu {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      position: fixed; /* fijo al hacer scroll */
+      top: 4rem; /* justo debajo del navbar */
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 140, 0, 0.95);
+      text-align: center;
+      padding: 1.5rem 0;
+      border-radius: 0 0 1rem 1rem;
+      z-index: 50;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #mobileMenu a {
+      font-size: 1.25rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    #mobileMenu a:hover {
+      background-color: rgba(255, 165, 0, 0.8); /* hover naranja más intenso */
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <div id="bg"></div>
+  <div class="overlay"></div>
+
+  <!-- NAVBAR -->
+  <header id="siteHeader" class="absolute top-0 left-0 w-full z-50">
+    <nav class="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto">
+      <div class="flex items-center space-x-3">
+        <img src="assets/logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12">
+        <span class="text-xl md:text-2xl font-bold text-black drop-shadow-md">Lonchera Mágica</span>
+      </div>
+      <ul class="hidden md:flex space-x-6 md:space-x-8 text-lg font-medium text-black drop-shadow-md">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="menus.html">Menús</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="seleccion.html">Selección</a></li>
+        <li><a href="contacto.html" class="text-orange-600">Contacto</a></li>
+      </ul>
+      <div class="md:hidden text-3xl cursor-pointer text-black" id="menuToggle">☰</div>
+    </nav>
+    <!-- Menú móvil -->
+    <!-- Menú móvil -->
+    <div id="mobileMenu" class="hidden md:hidden flex-col items-center bg-orange-500/95 text-white py-6 fixed top-16 left-0 w-full z-50 rounded-b-xl">
+      <a href="index.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Inicio</a>
+      <a href="menus.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Menús</a>
+      <a href="blog.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Blog</a>
+      <a href="seleccion.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Selección</a>
+      <a href="contacto.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Contacto</a>
+    </div>
+  </header>
+
+  <!-- CONTACTO -->
+  <section class="pt-28 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+    <!-- FORM -->
+    <form action="https://formspree.io/f/abcd1234" method="POST" class="bg-white p-8 rounded-xl shadow-lg space-y-6 fade-in-right">
+      <h2 class="text-3xl font-extrabold text-orange-700">Escríbenos</h2>
+
+      <input type="text" name="nombre" placeholder="Tu nombre" required
+            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500">
+
+      <input type="email" name="email" placeholder="Tu correo" required
+            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500">
+
+      <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required
+                class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500"></textarea>
+
+      <!-- Protección contra spam -->
+      <input type="text" name="_gotcha" style="display:none">
+
+      <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg shadow-md transition w-full">
+        Enviar Mensaje
+      </button>
+    </form>
+
+
+    <!-- MAPA -->
+    <div class="rounded-2xl overflow-hidden shadow-2xl fade-in-right border-4 border-orange-500/60">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3976.807525555815!2d-76.4167!3d3.23114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2sco!4v REPLACE_WITH_VALID_TIMESTAMP"
+        width="100%"
+        height="400"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"></iframe>
+    </div>
+  </section>
+
+    <!-- FOOTER -->
+  <footer class="mt-16 bg-orange-100 py-10">
+    <div class="max-w-6xl mx-auto text-center px-4">
+      <p class="text-lg md:text-xl text-orange-700 font-semibold">"Come para vivir, no vivas para comer. La alimentacion saludable es el camino hacia una vida plena y feliz."</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+    if (!mobileMenu.classList.contains('hidden') && 
+        !mobileMenu.contains(e.target) && 
+        e.target !== menuToggle) {
+      mobileMenu.classList.add('hidden');
+    }
+    });
+
+  
+    const form = document.querySelector("form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        alert("¡Tu mensaje fue enviado con éxito!");
+        form.reset();
+      } else {
+        alert("Hubo un error, intenta nuevamente.");
+      }
+    });
+
+  </script>
+</body>
+</html>
