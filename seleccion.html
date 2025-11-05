@@ -7,17 +7,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'DM Sans', sans-serif;
-    }
+    body { font-family: 'DM Sans', sans-serif; }
 
-        /* Fondo borroso con overlay */
+    /* Fondo borroso */
     #bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80');
       background-size: cover;
       background-position: center;
@@ -27,11 +23,9 @@
 
     .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.65);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(255,255,255,0.65);
       z-index: -1;
     }
 
@@ -39,29 +33,18 @@
       flex-direction: column;
       align-items: center;
       gap: 1.5rem;
-      position: fixed; /* fijo al hacer scroll */
-      top: 4rem; /* justo debajo del navbar */
+      position: fixed;
+      top: 4rem;
       left: 0;
       width: 100%;
-      background-color: rgba(255, 140, 0, 0.95);
+      background-color: rgba(255,140,0,0.95);
       text-align: center;
       padding: 1.5rem 0;
       border-radius: 0 0 1rem 1rem;
       z-index: 50;
       transition: all 0.3s ease-in-out;
     }
-
-    #mobileMenu a {
-      font-size: 1.25rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-
-    #mobileMenu a:hover {
-      background-color: rgba(255, 165, 0, 0.8); /* hover naranja más intenso */
-    }
-  </style> 
+  </style>
 </head>
 <body class="bg-gradient-to-b from-orange-50 to-yellow-100 text-gray-800">
 
@@ -69,7 +52,7 @@
   <div class="overlay"></div>
 
   <!-- NAVBAR -->
-  <header id="siteHeader" class="absolute top-0 left-0 w-full z-50">
+  <header class="absolute top-0 left-0 w-full z-50">
     <nav class="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto">
       <div class="flex items-center space-x-3">
         <img src="assets/logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12">
@@ -84,8 +67,6 @@
       </ul>
       <div class="md:hidden text-3xl cursor-pointer text-black" id="menuToggle">☰</div>
     </nav>
-    <!-- Menú móvil -->
-    <!-- Menú móvil -->
     <div id="mobileMenu" class="hidden md:hidden flex-col items-center bg-orange-500/95 text-white py-6 fixed top-16 left-0 w-full z-50 rounded-b-xl">
       <a href="index.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Inicio</a>
       <a href="menus.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Menús</a>
@@ -109,72 +90,25 @@
         <input type="number" id="edad" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500" required>
       </div>
 
-      <!-- Menú base ya estipulado -->
+      <!-- NUEVO: Estado nutricional -->
+      <div>
+        <label class="block text-lg font-medium mb-2">Estado nutricional</label>
+        <select id="estado" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500" required>
+          <option value="normal">Peso normal</option>
+          <option value="desnutricion">Desnutrición</option>
+          <option value="sobrepeso">Sobrepeso</option>
+        </select>
+      </div>
+
+      <!-- Menú base -->
       <div class="bg-orange-100 p-4 rounded-lg shadow-md">
         <h3 class="font-bold text-orange-700 mb-2">Menú Base del Colegio 🍎</h3>
-        <ul class="list-disc list-inside text-gray-700">
-          <li><strong>Lunes:</strong> Sándwich integral, ensalada de frutas y jugo natural</li>
-          <li><strong>Martes:</strong> Yogurt con granola y frutas frescas</li>
-          <li><strong>Miércoles:</strong> Fresas con crema (versión saludable)</li>
-          <li><strong>Jueves:</strong> Pancakes de avena con fruta fresca y miel</li>
-          <li><strong>Viernes:</strong> Tacos de pollo desmechado, verdura salteada y limonada</li>
-        </ul>
+        <ul id="menuBase" class="list-disc list-inside text-gray-700"></ul>
       </div>
 
       <!-- Menús por día -->
       <p class="text-lg font-medium text-gray-700 mt-4">Puedes personalizar si lo deseas:</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block font-medium mb-2">Lunes</label>
-          <select id="lunes" class="w-full border rounded-lg p-3">
-            <option>Sándwich integral, ensalada de frutas y jugo natural</option>
-            <option>Yogurt con granola y frutas frescas</option>
-            <option>Fresas con crema (versión saludable)</option>
-            <option>Pancakes de avena con fruta fresca y miel</option>
-            <option>Tacos de pollo desmechado, verdura salteada y limonada</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-medium mb-2">Martes</label>
-          <select id="martes" class="w-full border rounded-lg p-3">
-            <option>Sándwich integral, ensalada de frutas y jugo natural</option>
-            <option>Yogurt con granola y frutas frescas</option>
-            <option>Fresas con crema (versión saludable)</option>
-            <option>Pancakes de avena con fruta fresca y miel</option>
-            <option>Tacos de pollo desmechado, verdura salteada y limonada</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-medium mb-2">Miércoles</label>
-          <select id="miercoles" class="w-full border rounded-lg p-3">
-            <option>Sándwich integral, ensalada de frutas y jugo natural</option>
-            <option>Yogurt con granola y frutas frescas</option>
-            <option>Fresas con crema (versión saludable)</option>
-            <option>Pancakes de avena con fruta fresca y miel</option>
-            <option>Tacos de pollo desmechado, verdura salteada y limonada</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-medium mb-2">Jueves</label>
-          <select id="jueves" class="w-full border rounded-lg p-3">
-            <option>Sándwich integral, ensalada de frutas y jugo natural</option>
-            <option>Yogurt con granola y frutas frescas</option>
-            <option>Fresas con crema (versión saludable)</option>
-            <option>Pancakes de avena con fruta fresca y miel</option>
-            <option>Tacos de pollo desmechado, verdura salteada y limonada</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-medium mb-2">Viernes</label>
-          <select id="viernes" class="w-full border rounded-lg p-3">
-            <option>Sándwich integral, ensalada de frutas y jugo natural</option>
-            <option>Yogurt con granola y frutas frescas</option>
-            <option>Fresas con crema (versión saludable)</option>
-            <option>Pancakes de avena con fruta fresca y miel</option>
-            <option>Tacos de pollo desmechado, verdura salteada y limonada</option>
-          </select>
-        </div>
-      </div>
+      <div id="menuPersonalizado" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
 
       <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg shadow-md transition w-full">
         Confirmar Selección
@@ -188,57 +122,86 @@
     </div>
   </section>
 
-    <!-- FOOTER -->
+  <!-- FOOTER -->
   <footer class="mt-16 bg-orange-100 py-10">
     <div class="max-w-6xl mx-auto text-center px-4">
-      <p class="text-lg md:text-xl text-orange-700 font-semibold">"Come para vivir, no vivas para comer. La alimentacion saludable es el camino hacia una vida plena y feliz."</p>
+      <p class="text-lg md:text-xl text-orange-700 font-semibold">
+        "Come para vivir, no vivas para comer. La alimentación saludable es el camino hacia una vida plena y feliz."
+      </p>
     </div>
   </footer>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');
     const mobileMenu = document.getElementById('mobileMenu');
-    const form = document.getElementById('menuForm');
+    menuToggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    // Datos de menús según estado nutricional
+    const menus = {
+      normal: [
+        "Sándwich integral, ensalada de frutas y jugo natural",
+        "Yogurt con granola y frutas frescas",
+        "Fresas con crema (versión saludable)",
+        "Pancakes de avena con fruta fresca y miel",
+        "Tacos de pollo desmechado, verdura salteada y limonada"
+      ],
+      desnutricion: [
+        "Arepa con huevo y aguacate + jugo de mango natural",
+        "Batido de banano con avena y maní",
+        "Arroz con pollo y verduras + compota de frutas",
+        "Pan integral con queso + leche chocolatada natural",
+        "Pasta con atún y ensalada de frutas"
+      ],
+      sobrepeso: [
+        "Wrap de pollo con lechuga + agua saborizada natural",
+        "Ensalada de frutas con yogurt light",
+        "Tostadas integrales con aguacate y huevo cocido",
+        "Avena con manzana verde y canela sin azúcar",
+        "Rollitos de jamón de pavo y pepino + té verde frío"
+      ]
+    };
+
+    const menuForm = document.getElementById('menuForm');
+    const menuBase = document.getElementById('menuBase');
+    const menuPersonalizado = document.getElementById('menuPersonalizado');
+    const estadoSelect = document.getElementById('estado');
     const historialDiv = document.getElementById('historial');
     const historialLista = document.getElementById('historialLista');
 
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-
-
-    document.addEventListener('click', (e) => {
-    if (!mobileMenu.classList.contains('hidden') && 
-        !mobileMenu.contains(e.target) && 
-        e.target !== menuToggle) {
-      mobileMenu.classList.add('hidden');
-    }
-    });
-
-    // Cargar historial desde localStorage al iniciar
     let historial = JSON.parse(localStorage.getItem("historialMenus")) || [];
-    renderHistorial();
 
-    form.addEventListener('submit', (e) => {
+    function renderMenu(estado) {
+      const opciones = menus[estado];
+      menuBase.innerHTML = opciones.map((op, i) => `<li><strong>${["Lunes","Martes","Miércoles","Jueves","Viernes"][i]}:</strong> ${op}</li>`).join('');
+      menuPersonalizado.innerHTML = opciones.map((op, i) => `
+        <div>
+          <label class="block font-medium mb-2">${["Lunes","Martes","Miércoles","Jueves","Viernes"][i]}</label>
+          <select id="${["lunes","martes","miercoles","jueves","viernes"][i]}" class="w-full border rounded-lg p-3">
+            ${opciones.map(o => `<option ${o === op ? "selected" : ""}>${o}</option>`).join('')}
+          </select>
+        </div>
+      `).join('');
+    }
+
+    estadoSelect.addEventListener('change', e => renderMenu(e.target.value));
+    renderMenu("normal");
+
+    menuForm.addEventListener('submit', e => {
       e.preventDefault();
-
       const nombre = document.getElementById('nombre').value;
       const edad = document.getElementById('edad').value;
+      const estado = estadoSelect.value;
 
       const dias = ["lunes","martes","miercoles","jueves","viernes"];
       let seleccion = {};
+      dias.forEach(dia => seleccion[dia] = document.getElementById(dia).value);
 
-      dias.forEach(dia => {
-        seleccion[dia] = document.getElementById(dia).value;
-      });
-
-      const registro = { nombre, edad, seleccion };
+      const registro = { nombre, edad, estado, seleccion };
       historial.push(registro);
-
       localStorage.setItem("historialMenus", JSON.stringify(historial));
-
       renderHistorial();
-      form.reset();
+      menuForm.reset();
+      renderMenu("normal");
     });
 
     function renderHistorial() {
@@ -247,42 +210,30 @@
         historialDiv.classList.add("hidden");
         return;
       }
-
       historialDiv.classList.remove("hidden");
-
       historial.forEach((item, index) => {
-        let seleccionHTML = "";
-        for (let dia in item.seleccion) {
-          const diaCapitalizado = dia.charAt(0).toUpperCase() + dia.slice(1);
-          seleccionHTML += `<li><strong>${diaCapitalizado}:</strong> ${item.seleccion[dia]}</li>`;
-        }
+        let seleccionHTML = Object.entries(item.seleccion)
+          .map(([dia, comida]) => `<li><strong>${dia.charAt(0).toUpperCase()+dia.slice(1)}:</strong> ${comida}</li>`).join('');
 
-        const historialItem = document.createElement('div');
-        historialItem.className = "bg-white p-4 rounded-lg shadow border-l-4 border-orange-500 flex justify-between items-start";
-        historialItem.innerHTML = `
+        const div = document.createElement('div');
+        div.className = "bg-white p-4 rounded-lg shadow border-l-4 border-orange-500 flex justify-between items-start";
+        div.innerHTML = `
           <div>
-            <p class="font-semibold">👦 ${item.nombre} (${item.edad} años)</p>
+            <p class="font-semibold">👦 ${item.nombre} (${item.edad} años) - <span class="text-orange-600">${item.estado}</span></p>
             <ul class="list-disc list-inside text-gray-700 mt-2">${seleccionHTML}</ul>
           </div>
           <button class="ml-4 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm deleteBtn">Eliminar</button>
         `;
-
-        historialItem.querySelector(".deleteBtn").addEventListener("click", () => {
+        div.querySelector(".deleteBtn").addEventListener("click", () => {
           historial.splice(index, 1);
           localStorage.setItem("historialMenus", JSON.stringify(historial));
           renderHistorial();
         });
-
-        historialLista.appendChild(historialItem);
-      });
-
-          // Menú móvil
-      const menuToggle = document.getElementById('menuToggle');
-      const mobileMenu = document.getElementById('mobileMenu');
-      menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+        historialLista.appendChild(div);
       });
     }
+
+    renderHistorial();
   </script>
 </body>
 </html>
