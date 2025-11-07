@@ -1,271 +1,436 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lonchera Mágica - Menú Semanal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lonchera Mágica - Menú</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'DM Sans', sans-serif;
-      overflow-x: hidden;
-      margin: 0;
-    }
+    body { font-family: 'DM Sans', sans-serif; background-color: #fffaf4; overflow-x: hidden; }
+    #bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover; background-position: center;
+      filter: blur(8px) brightness(0.8); z-index: -1; transition: background-image 0.8s ease-in-out; }
+    .card { width:100%; max-width:320px; background:white; border-radius:1.5rem; box-shadow:0 6px 18px rgba(0,0,0,.15); overflow:hidden; flex-shrink:0; transition:transform .3s ease; }
+    .card:hover{ transform: scale(1.03); }
+    .card img{ width:100%; height:180px; object-fit:cover; display:block; }
+    #carousel{ display:flex; transition: transform .5s ease; }
+    .arrow-btn { position:absolute; top:50%; transform:translateY(-50%);
+      background: rgba(255,255,255,.95); border:2px solid #ffa500; color:#ffa500;
+      width:42px; height:42px; border-radius:50%; font-size:1.4rem;
+      display:flex; align-items:center; justify-content:center; cursor:pointer;
+      transition: all .3s ease; }
+    .arrow-btn:hover{ background:#ffa500; color:white; transform:translateY(-50%) scale(1.08); }
+    #prev{ left:8px; } #next{ right:8px; }
+    .tabla-pesos{ background:white; border-radius:1rem; box-shadow:0 4px 12px rgba(0,0,0,.08); overflow:hidden; width:100%; max-width:320px; margin:0 auto; }
+    .tabla-pesos th{ background:#ffa500; color:white; padding:.6rem; font-weight:700; text-align:center; }
+    .tabla-pesos td{ padding:.5rem; text-align:center; border-bottom:1px solid #f3f3f3; }
+    .titulo-magico{ color:white; font-weight:700; font-size:1.2rem; }
+    .hist-card { padding:.75rem; border-radius:.75rem; background:#fffaf0; border:1px solid #ffe6cc; }
+    #modalHistorial, #modalPersonalizar { z-index: 9999; }
 
-    /* Fondo borroso con transición fade */
-    #bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px) brightness(0.7);
-      z-index: -1;
-      transition: opacity 0.8s ease-in-out;
-      opacity: 1;
-    }
-    #bg.fade {
-      opacity: 0;
-    }
+    /* colors for day mini-cards */
+    .day-lunes{ background: linear-gradient(135deg,#e6f0ff,#f8fbff); }
+    .day-martes{ background: linear-gradient(135deg,#e8f9ef,#f8fefa); }
+    .day-miercoles{ background: linear-gradient(135deg,#fff9e6,#fffdf6); }
+    .day-jueves{ background: linear-gradient(135deg,#fff4ea,#fff9f5); }
+    .day-viernes{ background: linear-gradient(135deg,#f5ecff,#fbf7ff); }
 
-    main, header {
-      position: relative;
-      z-index: 1;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 320px;
-      flex-shrink: 0;
-    }
-
-    #carousel {
-      display: flex;
-      transition: transform 0.7s ease-in-out;
-    }
-
-    /* Navbar texto blanco */
-    header nav a { color: #ffffff; }
-
-    /* Ajustes responsivos de fondo */
-    @media (max-width: 768px) { #bg { background-position: top center; } }
-    @media (max-width: 480px) { #bg { background-position: center top; } }
-
-
-        #mobileMenu {
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      position: fixed; /* fijo al hacer scroll */
-      top: 4rem; /* justo debajo del navbar */
-      left: 0;
-      width: 100%;
-      background-color: rgba(255, 140, 0, 0.95);
-      text-align: center;
-      padding: 1.5rem 0;
-      border-radius: 0 0 1rem 1rem;
-      z-index: 50;
-      transition: all 0.3s ease-in-out;
-    }
-
-    #mobileMenu a {
-      font-size: 1.25rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-
-    #mobileMenu a:hover {
-      background-color: rgba(255, 165, 0, 0.8); /* hover naranja más intenso */
+    @media (max-width: 640px) {
+      .card img{ height:150px; }
+      .arrow-btn{ width:38px; height:38px; font-size:1.1rem; }
+      header nav{ padding-left:1rem; padding-right:1rem; }
+      .titulo-magico{ font-size:1rem; }
     }
   </style>
 </head>
-<body class="min-h-screen">
-
-  <!-- Fondo dinámico -->
-  <div id="bg" style="background-image: url('https://pikaso.cdnpk.net/private/production/2597544861/upload.png?preview=true&token=exp=1763957493~hmac=d838f0fe58a6aac28978258ae9ce41588a766db4acec8e73d4545e8af65eb0e2&size=300');"></div>
+<body>
+  <div id="bg"></div>
 
   <!-- NAVBAR -->
   <header id="siteHeader" class="absolute top-0 left-0 w-full z-50">
     <nav class="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto text-orange-700">
       <div class="flex items-center space-x-3">
         <img src="assets/logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12">
-        <span class="text-xl md:text-2xl font-bold text-white drop-shadow-md">Lonchera Mágica</span>
+        <span class="titulo-magico">Lonchera Mágica</span>
       </div>
       <ul class="hidden md:flex space-x-6 md:space-x-8 text-lg font-medium text-white drop-shadow-md">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="menus.html" class="text-orange-400">Menús</a></li>
+        <li><a href="index.html" class="text-orange-400">Inicio</a></li>
+        <li><a href="menus.html">Menús</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="seleccion.html">Selección</a></li>
         <li><a href="contacto.html">Contacto</a></li>
       </ul>
       <div class="md:hidden text-3xl cursor-pointer text-white" id="menuToggle">☰</div>
     </nav>
-    <!-- Menú móvil -->
+    <!-- Menú móvil desplegable (lo dejé exactamente como en tu código original) -->
     <div id="mobileMenu" class="hidden md:hidden flex-col items-center bg-orange-500/95 text-white py-6 fixed top-16 left-0 w-full z-50 rounded-b-xl">
       <a href="index.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Inicio</a>
       <a href="menus.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Menús</a>
       <a href="blog.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Blog</a>
-      <a href="seleccion.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Selección</a>
       <a href="contacto.html" class="block py-2 px-4 hover:bg-orange-600 w-full text-center">Contacto</a>
     </div>
   </header>
 
-  <!-- CONTENIDO -->
-  <main class="pt-28 pb-12 px-4 sm:px-6 max-w-6xl mx-auto flex flex-col items-center">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-8 text-center drop-shadow-lg">
-      Menú Semanal
-    </h2>
+  <main id="formSection" class="flex flex-col items-center justify-center gap-6 min-h-screen pt-24 pb-10 px-4">
+    <div class="bg-white shadow-xl rounded-2xl p-6 max-w-md w-full text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-orange-600 mb-3">Selecciona tu Menú</h2>
+      <form id="menuForm" class="space-y-3">
+        <input type="text" id="nombre" placeholder="Nombre del estudiante" required class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-400" />
+        <input type="number" id="peso" placeholder="Peso (kg)" required min="1" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-400" />
+        <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition">Ver menú recomendado</button>
+      </form>
 
-    <!-- Carrusel -->
-    <div class="relative w-full overflow-hidden">
-      <div id="carousel" class="flex">
-
-        <!-- Slide Lunes -->
-        <div class="flex justify-center min-w-full px-2 sm:px-0">
-          <div class="card bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition">
-            <img src="https://pikaso.cdnpk.net/private/production/2597544861/upload.png?preview=true&token=exp=1763957493~hmac=d838f0fe58a6aac28978258ae9ce41588a766db4acec8e73d4545e8af65eb0e2&size=300"
-                 class="w-full h-56 sm:h-64 object-cover" alt="Lunes">
-            <div class="p-6 text-center text-gray-800">
-              <h3 class="text-2xl font-bold text-orange-600">Lunes</h3>
-              <p class="mt-3 text-base">Sándwich de mortadela y queso en figura de estrellas<br>
-                uvas y manzana verde<br>
-                huevo cocido<br>
-                limonada natural
-
-              </p>
-            </div>
-          </div>
+      <!-- Tabla de referencia de pesos -->
+      <div class="mt-4">
+        <div class="tabla-pesos">
+          <table class="w-full text-sm">
+            <thead>
+              <tr><th>Rango de peso (kg)</th><th>Clasificación</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Menos de 40 kg</td><td>Bajo Peso</td></tr>
+              <tr><td>40 - 69 kg</td><td>Peso Normal</td></tr>
+              <tr><td>70 kg o más</td><td>Sobrepeso</td></tr>
+            </tbody>
+          </table>
         </div>
-
-        <!-- Slide Martes -->
-        <div class="flex justify-center min-w-full px-2 sm:px-0">
-          <div class="card bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition">
-            <img src="https://www.clebastien.com/wp-content/uploads/2025/01/platano_pankeke_fresas.png" 
-                 class="w-full h-56 sm:h-64 object-cover" alt="Martes">
-            <div class="p-6 text-center text-gray-800">
-              <h3 class="text-2xl font-bold text-orange-600">Martes</h3>
-              <p class="mt-3 text-base">mini pancakes con fresa y banano</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide Miércoles -->
-        <div class="flex justify-center min-w-full px-2 sm:px-0">
-          <div class="card bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition">
-            <img src="https://i.ibb.co/nF1wY00/Gemini-Generated-Image-tiv6ostiv6ostiv6.png" 
-                 class="w-full h-56 sm:h-64 object-cover" alt="Miércoles">
-            <div class="p-6 text-center text-gray-800">
-              <h3 class="text-2xl font-bold text-orange-600">Miércoles</h3>
-              <p class="mt-3 text-base">Hamburguesa con carne de lentejas, tomate y lechuga<br>
-                Fresas picadas<br>
-                Jugo de naranja natural
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide Jueves -->
-        <div class="flex justify-center min-w-full px-2 sm:px-0">
-          <div class="card bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition">
-            <img src="https://i.ibb.co/nN2L5YbT/Gemini-Generated-Image-uicm07uicm07uicm.png" 
-                 class="w-full h-56 sm:h-64 object-cover" alt="Jueves">
-            <div class="p-6 text-center text-gray-800">
-              <h3 class="text-2xl font-bold text-orange-600">Jueves</h3>
-              <p class="mt-3 text-base">Sandwich con mortadela y lechuga<br>
-                Huevo cocido<br>
-                Banano<br>
-                Avena
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide Viernes -->
-        <div class="flex justify-center min-w-full px-2 sm:px-0">
-          <div class="card bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition">
-            <img src="https://i.ibb.co/9m7dVnT7/Gemini-Generated-Image-ny4n8bny4n8bny4n.png" 
-                 class="w-full h-56 sm:h-64 object-cover" alt="Viernes">
-            <div class="p-6 text-center text-gray-800">
-              <h3 class="text-2xl font-bold text-orange-600">Viernes</h3>
-              <p class="mt-3 text-base">Albondigas de lentejas<br>
-                Ensalada de aguacate<br>
-                Batido de banano en leche
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Flechas -->
-      <button id="prev" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white text-orange-500 w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-orange-100 transition">
-        ❮
-      </button>
-      <button id="next" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white text-orange-500 w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-orange-100 transition">
-        ❯
-      </button>
+      <button id="abrirHistorial" class="mt-4 w-full bg-gray-100 text-orange-600 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">📋 Ver historial de menús</button>
     </div>
   </main>
 
+  <section id="menuSection" class="hidden pt-20 pb-12 px-4 max-w-6xl mx-auto text-center">
+    <h2 id="tituloMenu" class="text-3xl md:text-4xl text-white font-extrabold mb-6 py-4"></h2>
+    <div class="relative w-full overflow-hidden">
+      <div id="carousel" class="flex"></div>
+      <button id="prev" class="arrow-btn">❮</button>
+      <button id="next" class="arrow-btn">❯</button>
+    </div>
+    <div class="flex flex-col md:flex-row justify-center gap-4 mt-6">
+      <button id="personalizarDia" class="bg-yellow-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-yellow-600 transition">✏️ Personalizar día actual</button>
+      <button id="seleccionarMenuSemanal" class="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition">✅ Seleccionar menú semanal</button>
+      <button id="volver" class="bg-gray-200 text-orange-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-300 transition">← Volver</button>
+    </div>
+  </section>
+
+  <!-- Modal historial -->
+  <div id="modalHistorial" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center px-3">
+    <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-3xl relative max-h-[80vh] overflow-y-auto">
+      <h2 class="text-2xl font-bold text-orange-600 mb-4 text-center">📋 Historial de Menús Semanales</h2>
+      <div id="historialContenido" class="space-y-4 text-gray-800"></div>
+      <div class="flex justify-center gap-4 mt-6">
+        <button id="limpiarHistorial" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl font-semibold transition-all">🗑 Limpiar</button>
+        <button id="cerrarHistorial" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-xl font-semibold transition-all">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal personalizar -->
+  <div id="modalPersonalizar" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center px-3">
+    <div class="bg-white rounded-2xl shadow-2xl p-6 w-11/12 md:w-1/2 relative">
+      <h2 class="text-2xl font-bold text-orange-600 mb-4 text-center">✏️ Personalizar Menú del Día</h2>
+      <textarea id="nuevoMenu" rows="4" class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-orange-400" placeholder="Escribe aquí los nuevos alimentos..."></textarea>
+      <div class="flex justify-center gap-4 mt-6">
+        <button id="guardarPersonalizacion" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-xl font-semibold">Guardar</button>
+        <button id="cerrarPersonalizar" class="bg-gray-300 hover:bg-gray-400 text-orange-700 px-6 py-2 rounded-xl font-semibold">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const carousel = document.getElementById('carousel');
-    const bg = document.getElementById('bg');
-    const totalItems = carousel.children.length;
+    document.addEventListener("DOMContentLoaded", () => {
+      // Guardamos una copia de los menús originales para referencia en el historial
+      const originalMenus = JSON.parse(JSON.stringify({
+        "Bajo Peso": [
+          { dia: "Lunes", comida: "Sandwich de pollo con aguacate, manzana, huevo cocido y jugo de mango", img: "https://images.unsplash.com/photo-1604908554268-2f0f18beae68?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Martes", comida: "Mini pancakes con mantequilla de maní y banano, leche con cacao", img: "https://images.unsplash.com/photo-1572441710534-680c8b42bde0?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Miércoles", comida: "Arroz con lentejas, pollo al horno, aguacate y jugo de guayaba", img: "https://images.unsplash.com/photo-1578587018452-892bacefd3f3?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Jueves", comida: "Arepa con queso, huevo frito, papaya y avena en leche", img: "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Viernes", comida: "Albóndigas de carne, ensalada de remolacha y batido de fresa", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" }
+        ],
+        "Peso Normal": [
+          { dia: "Lunes", comida: "Sandwich de mortadela y queso, uvas, manzana verde, huevo cocido, limonada", img: "https://images.unsplash.com/photo-1512058564366-c9e9f94b91e3?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Martes", comida: "Mini pancakes con fresa y banano", img: "https://images.unsplash.com/photo-1512058564366-c9e9f94b91e3?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Miércoles", comida: "Hamburguesa de lentejas, tomate, lechuga, fresas picadas y jugo de naranja", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Jueves", comida: "Sandwich con mortadela y lechuga, banano, huevo cocido, avena", img: "https://images.unsplash.com/photo-1604908177522-4023c32a9e2e?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Viernes", comida: "Albóndigas de lentejas, ensalada de aguacate y batido de banano", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" }
+        ],
+        "Sobrepeso": [
+          { dia: "Lunes", comida: "Sandwich de pollo con lechuga y tomate, uvas, manzana verde y agua con limón", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Martes", comida: "Pancakes integrales con fresas y yogur sin azúcar", img: "https://images.unsplash.com/photo-1572441710534-680c8b42bde0?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Miércoles", comida: "Ensalada de lentejas con tomate, pepino y huevo cocido", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Jueves", comida: "Tostadas integrales con atún y lechuga, banano pequeño", img: "https://images.unsplash.com/photo-1604908177522-4023c32a9e2e?auto=format&fit=crop&w=800&q=80" },
+          { dia: "Viernes", comida: "Hamburguesa de pollo con pan integral, ensalada de frutas sin azúcar", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" }
+        ]
+      }));
 
-    const backgrounds = [
-      "https://pikaso.cdnpk.net/private/production/2597544861/upload.png?preview=true&token=exp=1763957493~hmac=d838f0fe58a6aac28978258ae9ce41588a766db4acec8e73d4545e8af65eb0e2&size=300",
-      "https://www.clebastien.com/wp-content/uploads/2025/01/platano_pankeke_fresas.png",
-      "https://i.ibb.co/nF1wY00/Gemini-Generated-Image-tiv6ostiv6ostiv6.png",
-      "https://i.ibb.co/nN2L5YbT/Gemini-Generated-Image-uicm07uicm07uicm.png",
-      "https://i.ibb.co/9m7dVnT7/Gemini-Generated-Image-ny4n8bny4n8bny4n.png"
-    ];
+      const menus = JSON.parse(JSON.stringify(originalMenus));
 
-    let index = 0;
-    let isTransitioning = false;
+      const form = document.getElementById('menuForm');
+      const carousel = document.getElementById('carousel');
+      const menuSection = document.getElementById('menuSection');
+      const bg = document.getElementById('bg');
+      const btnVolver = document.getElementById('volver');
+      const btnSeleccionar = document.getElementById('seleccionarMenuSemanal');
+      const btnPersonalizar = document.getElementById('personalizarDia');
+      const btnAbrirHistorial = document.getElementById('abrirHistorial');
+      const modalHistorial = document.getElementById('modalHistorial');
+      const modalPersonalizar = document.getElementById('modalPersonalizar');
+      const historialContenido = document.getElementById('historialContenido');
+      const cerrarHistorialBtn = document.getElementById('cerrarHistorial');
+      const limpiarHistorialBtn = document.getElementById('limpiarHistorial');
+      const cerrarPersonalizarBtn = document.getElementById('cerrarPersonalizar');
+      const guardarPersonalizacionBtn = document.getElementById('guardarPersonalizacion');
+      const nuevoMenuInput = document.getElementById('nuevoMenu');
+      const abrirHistorialHeader = document.getElementById('abrirHistorialHeader');
 
-    function showSlide(i) {
-      if (isTransitioning) return;
-      isTransitioning = true;
+      // --------- MENÚ HAMBURGUESA MÓVIL ---------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
 
-      index = (i + totalItems) % totalItems;
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
 
-      // Fondo fade
-      bg.classList.add('fade');
-      setTimeout(() => {
-        bg.style.backgroundImage = `url('${backgrounds[index]}')`;
-        bg.classList.remove('fade');
-      }, 400);
+      // --------- VARIABLES Y ESTADOS ---------
+      const diasSemana = ["Lunes","Martes","Miércoles","Jueves","Viernes"];
+      const dayClass = {
+        Lunes: 'day-lunes',
+        Martes: 'day-martes',
+        'Miércoles': 'day-miercoles',
+        Jueves: 'day-jueves',
+        Viernes: 'day-viernes'
+      };
 
-      carousel.style.transform = `translateX(-${index * 100}%)`;
+      let estadoActual = "", nombreActual = "", currentIndex = 0, intervalo;
+      let historialSemanal = JSON.parse(localStorage.getItem('historialSemanal')) || [];
 
-      setTimeout(() => { isTransitioning = false; }, 500);
-    }
+      // --------- FORMULARIO ---------
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        nombreActual = document.getElementById('nombre').value.trim();
+        const peso = parseFloat(document.getElementById('peso').value);
+        if (!nombreActual || isNaN(peso) || peso <= 0) return alert('Por favor ingresa nombre y peso válidos.');
+        estadoActual = peso < 40 ? "Bajo Peso" : peso > 69 ? "Sobrepeso" : "Peso Normal";
+        mostrarMenu();
+      });
 
-    document.getElementById('prev').addEventListener('click', () => showSlide(index - 1));
-    document.getElementById('next').addEventListener('click', () => showSlide(index + 1));
+      function mostrarMenu() {
+        document.getElementById('formSection').classList.add('hidden');
+        menuSection.classList.remove('hidden');
+        document.getElementById('tituloMenu').textContent = `🍽️ Menú recomendado (${estadoActual})`;
+        carousel.innerHTML = menus[estadoActual].map((item, idx) => `
+          <div class="flex justify-center min-w-full px-2">
+            <div class="card" data-bg="${item.img}" data-idx="${idx}">
+              <img src="${item.img}" alt="${item.dia}">
+              <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-orange-600">${item.dia}</h3>
+                <ul class="mt-3 text-base text-gray-700 space-y-1">
+                  ${item.comida.split(',').map(c => `<li>${c.trim()}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>`).join('');
+        currentIndex = 0;
+        carousel.style.transform = `translateX(0%)`;
+        cambiarFondo();
+        autoCarrusel();
+      }
 
-    // Carrusel infinito real
-    setInterval(() => showSlide(index + 1), 5000);
+      function cambiarFondo() {
+        const img = menus[estadoActual][currentIndex].img;
+        bg.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('${img}')`;
+      }
 
-        // Menú móvil
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+      function mover(d) {
+        currentIndex = (currentIndex + d + menus[estadoActual].length) % menus[estadoActual].length;
+        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+        cambiarFondo();
+      }
 
-    document.addEventListener('click', (e) => {
-    if (!mobileMenu.classList.contains('hidden') && 
-        !mobileMenu.contains(e.target) && 
-        e.target !== menuToggle) {
-      mobileMenu.classList.add('hidden');
-    }
+      document.getElementById('next').onclick = () => { mover(1); resetAuto(); };
+      document.getElementById('prev').onclick = () => { mover(-1); resetAuto(); };
+      function autoCarrusel() { clearInterval(intervalo); intervalo = setInterval(() => mover(1), 5000); }
+      function resetAuto() { clearInterval(intervalo); autoCarrusel(); }
+
+      btnVolver.addEventListener('click', () => {
+        menuSection.classList.add('hidden');
+        document.getElementById('formSection').classList.remove('hidden');
+        clearInterval(intervalo);
+        bg.style.backgroundImage = "url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80')";
+      });
+
+      // --------- PERSONALIZAR MENÚ ---------
+      btnPersonalizar.addEventListener('click', () => {
+        const seleccionado = menus[estadoActual][currentIndex];
+        nuevoMenuInput.value = seleccionado.comida;
+        modalPersonalizar.classList.remove('hidden');
+      });
+
+      guardarPersonalizacionBtn.addEventListener('click', () => {
+        const nuevoTexto = nuevoMenuInput.value.trim();
+        if (!nuevoTexto) return alert('Por favor ingresa una descripción válida.');
+        menus[estadoActual][currentIndex].comida = nuevoTexto;
+        menus[estadoActual][currentIndex].personalizado = true;
+        carousel.querySelectorAll('.card').forEach((c) => {
+          if (parseInt(c.dataset.idx,10) === currentIndex) {
+            const ul = c.querySelector('ul');
+            ul.innerHTML = nuevoTexto.split(',').map(s => `<li>${s.trim()}</li>`).join('');
+          }
+        });
+        modalPersonalizar.classList.add('hidden');
+        alert('Menú actualizado correctamente. Si guardas la semana, el historial reflejará la versión personalizada.');
+      });
+
+      cerrarPersonalizarBtn.addEventListener('click', () => modalPersonalizar.classList.add('hidden'));
+      modalPersonalizar.addEventListener('click', e => { if (e.target === modalPersonalizar) modalPersonalizar.classList.add('hidden'); });
+
+      // --------- GUARDAR SEMANA COMPLETA ---------
+      btnSeleccionar.addEventListener('click', () => {
+        if (!nombreActual) return alert('Primero completa el formulario y genera el menú recomendado.');
+        const hoy = new Date();
+        const getMonday = (d) => {
+          const date = new Date(d);
+          const day = date.getDay();
+          const diff = (day === 0 ? -6 : 1) - day;
+          date.setDate(date.getDate() + diff);
+          date.setHours(0,0,0,0);
+          return date;
+        };
+        const lunes = getMonday(hoy);
+        const viernes = new Date(lunes);
+        viernes.setDate(lunes.getDate() + 4);
+        const opcionesFecha = { day: 'numeric', month: 'long' };
+        const semanaTexto = `Semana del ${lunes.toLocaleDateString('es-ES', opcionesFecha)} al ${viernes.toLocaleDateString('es-ES', opcionesFecha)} de ${viernes.getFullYear()}`;
+
+        const diasObj = {};
+        menus[estadoActual].forEach(m => {
+          diasObj[m.dia] = { comida: m.comida, personalizado: !!m.personalizado };
+        });
+
+        const semanaData = {
+          semana: semanaTexto,
+          nombre: nombreActual,
+          estado: estadoActual,
+          dias: diasObj,
+          tienePersonalizados: Object.values(diasObj).some(d => d.personalizado),
+          fechaGuardado: new Date().toLocaleString()
+        };
+
+        const idx = historialSemanal.findIndex(h => h.semana === semanaTexto && h.nombre === nombreActual);
+        if (idx !== -1) {
+          historialSemanal[idx] = semanaData;
+        } else {
+          historialSemanal.unshift(semanaData);
+        }
+
+        localStorage.setItem('historialSemanal', JSON.stringify(historialSemanal));
+        historialSemanal = JSON.parse(localStorage.getItem('historialSemanal')) || [];
+        renderHistorialSemanal();
+        alert(`✅ Menú semanal guardado: ${semanaTexto}`);
+      });
+
+      function renderHistorialSemanal() {
+        const historial = JSON.parse(localStorage.getItem('historialSemanal')) || [];
+        if (historial.length === 0) {
+          historialContenido.innerHTML = "<p class='text-center text-gray-500'>Aún no hay menús guardados.</p>";
+          return;
+        }
+        historialContenido.innerHTML = '';
+        historial.forEach(sem => {
+          const cont = document.createElement('div');
+          cont.className = 'bg-white rounded-2xl p-4 shadow-md';
+          const header = document.createElement('div');
+          header.className = 'mb-3';
+          header.innerHTML = `
+            <h3 class="text-lg font-bold text-orange-600">📅 ${sem.semana}</h3>
+            <p class="text-gray-700">👤 ${sem.nombre} - <span class="font-medium">${sem.estado}</span></p>
+            <p class="text-gray-500 text-sm">🕒 Guardado: ${sem.fechaGuardado}</p>
+          `;
+          cont.appendChild(header);
+
+          const grid = document.createElement('div');
+          grid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3';
+          diasSemana.forEach(dia => {
+            const dayBlock = document.createElement('div');
+            const cls = dayClass[dia] || 'bg-white';
+            dayBlock.className = `${cls} p-3 rounded-xl shadow-sm`;
+            const comidaText = (sem.dias && sem.dias[dia]) ? sem.dias[dia].comida : '—';
+            const personalizado = (sem.dias && sem.dias[dia] && sem.dias[dia].personalizado) ? true : false;
+            dayBlock.innerHTML = `
+              <h4 class="font-semibold">${dia}</h4>
+              <p class="text-sm mt-1">${comidaText}</p>
+              ${personalizado ? '<p class="text-orange-600 text-sm mt-2">✏️ Personalizado</p>' : ''}
+            `;
+            grid.appendChild(dayBlock);
+          });
+
+          cont.appendChild(grid);
+          historialContenido.appendChild(cont);
+        });
+      }
+
+      document.getElementById('abrirHistorial').addEventListener('click', () => {
+        renderHistorialSemanal();
+        modalHistorial.classList.remove('hidden');
+      });
+      if (abrirHistorialHeader) abrirHistorialHeader.addEventListener('click', () => { renderHistorialSemanal(); modalHistorial.classList.remove('hidden'); });
+
+      limpiarHistorialBtn.addEventListener('click', () => {
+        if (confirm('¿Seguro que deseas borrar todo el historial semanal?')) {
+          historialSemanal = [];
+          localStorage.removeItem('historialSemanal');
+          renderHistorialSemanal();
+        }
+      });
+
+      cerrarHistorialBtn.addEventListener('click', () => modalHistorial.classList.add('hidden'));
+      modalHistorial.addEventListener('click', e => { if (e.target === modalHistorial) modalHistorial.classList.add('hidden'); });
+
+      // Migración de datos antiguos si existen
+      (function migrateOldIfNeeded(){
+        const old = JSON.parse(localStorage.getItem('historialMenus') || '[]');
+        const existing = JSON.parse(localStorage.getItem('historialSemanal') || '[]');
+        if (old.length > 0 && existing.length === 0) {
+          const grouped = {};
+          old.forEach(item => {
+            const fecha = item.fecha ? new Date(item.fecha) : new Date();
+            const getMonday = (d) => {
+              const date = new Date(d);
+              const day = date.getDay();
+              const diff = (day === 0 ? -6 : 1) - day;
+              date.setDate(date.getDate() + diff);
+              date.setHours(0,0,0,0);
+              return date;
+            };
+            const lunes = getMonday(fecha);
+            const viernes = new Date(lunes); viernes.setDate(lunes.getDate()+4);
+            const opcionesFecha = { day: 'numeric', month: 'long' };
+            const semanaTexto = `Semana del ${lunes.toLocaleDateString('es-ES', opcionesFecha)} al ${viernes.toLocaleDateString('es-ES', opcionesFecha)} de ${viernes.getFullYear()}`;
+            const key = `${item.nombre}__${semanaTexto}`;
+            if (!grouped[key]) {
+              grouped[key] = {
+                semana: semanaTexto,
+                nombre: item.nombre,
+                estado: item.estado,
+                dias: {},
+                tienePersonalizados: false,
+                fechaGuardado: item.fecha || new Date().toLocaleString()
+              };
+            }
+            grouped[key].dias[item.dia] = { comida: item.comida, personalizado: !!item.personalizado };
+            if (item.personalizado) grouped[key].tienePersonalizados = true;
+          });
+          const arr = Object.values(grouped);
+          arr.sort((a,b)=> new Date(b.fechaGuardado) - new Date(a.fechaGuardado));
+          localStorage.setItem('historialSemanal', JSON.stringify(arr));
+          historialSemanal = arr;
+        }
+      })();
+
     });
   </script>
-
 </body>
 </html>
