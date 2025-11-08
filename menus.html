@@ -56,8 +56,8 @@
         <span class="titulo-magico">Lonchera Mágica</span>
       </div>
       <ul class="hidden md:flex space-x-6 md:space-x-8 text-lg font-medium text-white drop-shadow-md">
-        <li><a href="index.html" class="text-orange-400">Inicio</a></li>
-        <li><a href="menus.html">Menús</a></li>
+        <li><a href="index.html"">Inicio</a></li>
+        <li><a href="menus.html class="text-orange-400">Menús</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="contacto.html">Contacto</a></li>
       </ul>
@@ -144,25 +144,25 @@
       // Guardamos una copia de los menús originales para referencia en el historial
       const originalMenus = JSON.parse(JSON.stringify({
         "Bajo Peso": [
-          { dia: "Lunes", comida: "Sandwich de pollo con aguacate, manzana, huevo cocido y jugo de mango", img: "https://images.unsplash.com/photo-1604908554268-2f0f18beae68?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Martes", comida: "Mini pancakes con mantequilla de maní y banano, leche con cacao", img: "https://images.unsplash.com/photo-1572441710534-680c8b42bde0?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Miércoles", comida: "Arroz con lentejas, pollo al horno, aguacate y jugo de guayaba", img: "https://images.unsplash.com/photo-1578587018452-892bacefd3f3?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Jueves", comida: "Arepa con queso, huevo frito, papaya y avena en leche", img: "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Viernes", comida: "Albóndigas de carne, ensalada de remolacha y batido de fresa", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" }
+          { dia: "Lunes", comida: "Sandwich de pollo con aguacate, manzana, huevo cocido y jugo de mango", img: "https://i.ibb.co/23CVdh8t/Gemini-Generated-Image-jkgu8ejkgu8ejkgu.png" },
+          { dia: "Martes", comida: "Mini pancakes con mantequilla de maní y banano", img: "https://images.aws.nestle.recipes/original/1166a61a5857ead6c731295c31419725_pancakes_chocolate_mantequilla_mani.jpg" },
+          { dia: "Miércoles", comida: "mini wrap de atun, aguacate y jugo de guayaba", img: "https://i.ibb.co/TqqzVFhY/Gemini-Generated-Image-nx6asbnx6asbnx6a.png" },
+          { dia: "Jueves", comida: "Arepa con queso, huevo frito, papaya y avena en leche", img: "https://i.ibb.co/tpzdPHcP/Gemini-Generated-Image-7tfqoy7tfqoy7tfq.png" },
+          { dia: "Viernes", comida: "Albóndigas de carne, ensalada y limonada natural", img: "https://i.ibb.co/fGHWjM74/Chat-GPT-Image-Nov-8-2025-02-30-34-PM.png" }
         ],
         "Peso Normal": [
-          { dia: "Lunes", comida: "Sandwich de mortadela y queso, uvas, manzana verde, huevo cocido, limonada", img: "https://images.unsplash.com/photo-1512058564366-c9e9f94b91e3?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Martes", comida: "Mini pancakes con fresa y banano", img: "https://images.unsplash.com/photo-1512058564366-c9e9f94b91e3?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Miércoles", comida: "Hamburguesa de lentejas, tomate, lechuga, fresas picadas y jugo de naranja", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Jueves", comida: "Sandwich con mortadela y lechuga, banano, huevo cocido, avena", img: "https://images.unsplash.com/photo-1604908177522-4023c32a9e2e?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Viernes", comida: "Albóndigas de lentejas, ensalada de aguacate y batido de banano", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" }
+          { dia: "Lunes", comida: "Sandwich de mortadela y queso en forma de estrellas, uvas, manzana verde, huevo cocido, limonada", img: "https://i.ibb.co/WNdsbJ60/Chat-GPT-Image-Nov-7-2025-02-32-36-PM.png" },
+          { dia: "Martes", comida: "Mini pancakes con fresa y banano", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgUQLe2iD_WYqNbAkeMlhMQFtW61zGaG8ImA&s" },
+          { dia: "Miércoles", comida: "Hamburguesa con carne de lentejas, tomate, lechuga, fresas picadas y jugo de naranja", img: "https://i.ibb.co/nF1wY00/Gemini-Generated-Image-tiv6ostiv6ostiv6.png" },
+          { dia: "Jueves", comida: "Sandwich con mortadela y lechuga, banano, huevo cocido, avena", img: "https://i.ibb.co/LXwZ2c8M/Gemini-Generated-Image-uicm07uicm07uicm.png" },
+          { dia: "Viernes", comida: "Albóndigas de lentejas, ensalada de aguacate y batido de banano", img: "https://i.ibb.co/9m7dVnT7/Gemini-Generated-Image-ny4n8bny4n8bny4n.png" }
         ],
         "Sobrepeso": [
-          { dia: "Lunes", comida: "Sandwich de pollo con lechuga y tomate, uvas, manzana verde y agua con limón", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Martes", comida: "Pancakes integrales con fresas y yogur sin azúcar", img: "https://images.unsplash.com/photo-1572441710534-680c8b42bde0?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Miércoles", comida: "Ensalada de lentejas con tomate, pepino y huevo cocido", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Jueves", comida: "Tostadas integrales con atún y lechuga, banano pequeño", img: "https://images.unsplash.com/photo-1604908177522-4023c32a9e2e?auto=format&fit=crop&w=800&q=80" },
-          { dia: "Viernes", comida: "Hamburguesa de pollo con pan integral, ensalada de frutas sin azúcar", img: "https://images.unsplash.com/photo-1613145993481-1d16ef6c9d97?auto=format&fit=crop&w=800&q=80" }
+          { dia: "Lunes", comida: "Sandwich de pollo con lechuga y tomate, jugo de naranja", img: "https://i.ibb.co/KcLvp82n/Gemini-Generated-Image-d1ak6jd1ak6jd1ak.png" },
+          { dia: "Martes", comida: "Pancakes integrales con fresas y yogurt", img: "https://img-global.cpcdn.com/steps/39cd935053a2131f/400x400cq80/photo.jpg" },
+          { dia: "Miércoles", comida: "Ensalada fría de pollo con trozos de papa cocida con tomate y pepino", img: "https://d36fw6y2wq3bat.cloudfront.net/recipes/ensalada-fria-de-pollo-y-patata/900/ensalada-fria-de-pollo-y-patata.jpg" },
+          { dia: "Jueves", comida: "Tostadas integrales con atún y lechuga, té helado", img: "https://i.ibb.co/Q7grmCm1/Gemini-Generated-Image-e55g5se55g5se55g.png" },
+          { dia: "Viernes", comida: "Hamburguesa de pollo con pan integral, jugo de maracuya", img: "https://i.ibb.co/HfsNZgF2/Gemini-Generated-Image-8v8vkb8v8vkb8v8v.png" }
         ]
       }));
 
